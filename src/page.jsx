@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const HomePage = () => {
   return (
-    <div className='h-screen flex items-center justify-center'>
+    <div className=' flex items-center justify-center'>
       <div className='space-y-4'>
         <h2 className='text-xl tracking-wider '>Welcome to the app </h2>
         <div className='flex items-center space-x-2'>

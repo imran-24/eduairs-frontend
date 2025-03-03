@@ -15,7 +15,7 @@ const Input = ({
                 id={id}
                 {...register(id, { required })}
                 placeholder={label}
-                className={`flex h-9 w-full rounded-md border border-neutral-300 px-3 py-1 text-base shadow-sm focus:ring-1 focus-visible:outline-none focus-visible:border-none focus:ring-black
+                className={`flex h-9 w-full rounded-md border border-neutral-300 px-3 py-1 text-base shadow-sm focus:ring-1 focus-visible:outline-none focus-visible:border-none focus:ring-black placeholder:font-normal placeholder:text-neutral-400/80  placeholder:text-base
                 `    
                 }
 

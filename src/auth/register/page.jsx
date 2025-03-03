@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { apiUrl } from "../../../utils";
 import Input from "../../components/input";
+import Spiner from "../../components/spiner";
 
 // Zod validation schema
 const schema = z
@@ -35,7 +36,10 @@ const RegisterPage = () => {
     try {
       const response = await axios.post(`${apiUrl}/register`, data);
       console.log(response.data);
-      alert("Registration successful!");
+      localStorage.setItem('token', response.data.token);
+
+      window.location.assign('/dashboard');
+
       // Redirect or handle success logic
     } catch (error) {
       console.error(error);
@@ -46,7 +50,7 @@ const RegisterPage = () => {
   };
 
   return (
-    <div className="flex place-items-center max-w-md w-full mx-auto h-screen">
+    <div className="flex place-items-center max-w-md w-full mx-auto h-full">
       <div className="flex flex-col gap-4 w-full p-6 border rounded-lg shadow">
         <div>
           <h2 className="text-lg">Register</h2>
@@ -68,7 +72,7 @@ const RegisterPage = () => {
 
           {/* Password Field */}
           <div>
-            <Input id="password" label="Password" register={register} required type="password" />
+            <Input  id="password" label="Password" register={register} required type="password" />
             {errors.password && <p className="text-red-500 text-xs font-medium">{errors.password.message}</p>}
           </div>
 
@@ -81,10 +85,10 @@ const RegisterPage = () => {
           {/* Submit Button */}
           <button
             type="submit"
-            className="bg-black p-1 border-none  text-white h-9 rounded-lg hover:bg-black/80 disabled:bg-gray-400 transition-colors"
+            className="bg-black p-1 text-white h-9 rounded-lg hover:bg-black/80 disabled:bg-black/50 transition-colors"
             disabled={loading}
           >
-            {loading ? "Registering..." : "Register"}
+            {loading ? <Loader2 className="text-white animate-spin mx-auto"/> : "Register"}
           </button>
         </form>
 

@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
+import { ProductButton } from "./components/product-button";
+import Header from "../components/header";
 import { getAllProducts } from "../../actions/get-all-products";
-import { Link } from "@inertiajs/react";
 import Spiner from "../components/spiner";
 import ProductList from "../components/products/product-list";
-import Header from "../components/header";
+import axios from "axios";
+import { apiUrl } from "../../utils";
 
-const DashboardPage = () => {
+const ProductsPage = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
@@ -25,12 +27,32 @@ const DashboardPage = () => {
     fetchData();
   }, []);
 
+  const handleDelete = (e, id) => {
+    e.preventDefault();
+    e.stopPropagation();
+    alert("Are you sure?");
+    axios
+      .delete(`${apiUrl}/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      })
+      .then((response) => {
+        console.log("Success:", response.data);
+        setData((prevProducts) => prevProducts.filter((p) => p.id !== id));
+      })
+      .catch((error) => console.error("Error:", error));
+  };
+
   if (loading) return <Spiner />;
 
   return (
-    <div className='space-y-2'>
-      <Header title={"All Products"} />
-      <ProductList products={data} />
+    <div className=' space-y-2'>
+      <div className='flex items-center justify-between'>
+        <Header title={"My Products"} />
+        <ProductButton url={`/products/create`} title={"Create Product"} />
+      </div>
+      <ProductList products={data} onDelete={handleDelete} />
       {/* Pagination */}
       {/* {pagination?.links && (
         <div className='flex space-x-2 mt-4'>
@@ -55,4 +77,4 @@ const DashboardPage = () => {
   );
 };
 
-export default DashboardPage;
+export default ProductsPage;

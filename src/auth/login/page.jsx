@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { apiUrl } from "../../../utils";
 import Input from "../../components/input";
-import { useNavigate } from "react-router-dom";
+import { Loader2 } from "lucide-react";
 
 // Zod schema for form validation
 const schema = z.object({
@@ -14,7 +14,6 @@ const schema = z.object({
 });
 
 const LoginPage = () => {
-  const navigate = useNavigate();  
   const [loading, setLoading] = useState(false); // Loading state
 
   const {
@@ -31,8 +30,9 @@ const LoginPage = () => {
       const response = await axios.post(`${apiUrl}/login`, data);
       console.log(response.data);
       localStorage.setItem('token', response.data.token);
-      navigate('/dashboard');
-      alert("Login successful!");
+      
+      window.location.assign('/dashboard');
+
       // Handle login success (e.g., store token, redirect, etc.)
     } catch (error) {
       console.error(error);
@@ -43,7 +43,7 @@ const LoginPage = () => {
   };
 
   return (
-    <div className="flex place-items-center max-w-md w-full mx-auto h-screen">
+    <div className="flex place-items-center max-w-md w-full mx-auto h-full">
       <div className="flex flex-col gap-4 w-full p-6 border rounded-lg shadow">
         <div>
           <h2 className="text-lg">Login</h2>
@@ -52,6 +52,7 @@ const LoginPage = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col space-y-4">
           <div>
             <Input
+            type="email"
             id={'email'}
             label={'Email'}
             register={register}
@@ -62,6 +63,7 @@ const LoginPage = () => {
 
           <div>
           <Input
+            type="password"
             id={'password'}
             label={'Password'}
             register={register}
@@ -72,10 +74,10 @@ const LoginPage = () => {
 
           <button
             type="submit"
-            className="bg-black p-1 text-white h-9 rounded-lg hover:bg-black/80 disabled:bg-gray-400 transition-colors"
+            className="bg-black p-1 text-white h-9 rounded-lg hover:bg-black/80 disabled:bg-black/50 transition-colors"
             disabled={loading}
           >
-            {loading ? "Logging in..." : "Login"}
+            {loading ? <Loader2 className="text-white animate-spin mx-auto"/> : "Login"}
           </button>
         </form>
 

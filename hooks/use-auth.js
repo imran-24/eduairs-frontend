@@ -4,6 +4,7 @@ import { apiUrl } from "../utils";
 
 export const useAuth = () => {
   const [user, setUser] = useState(null);
+  const [role, setRole] = useState("");
   const [loading, setLoading] = useState(true);
   const [isAuthenticated, setIsAuthenticated] = useState(false);
 
@@ -24,7 +25,8 @@ export const useAuth = () => {
           },
         })
         .then((response) => {
-          setUser(response.data);
+          setUser(response.data.data);
+          setRole(response.data.role)
           setIsAuthenticated(true);
         })
         .catch((error) => {
@@ -42,5 +44,5 @@ export const useAuth = () => {
 
   }, []);
 
-  return { user, isAuthenticated, loading };
+  return { user, isAuthenticated, loading, role };
 };
