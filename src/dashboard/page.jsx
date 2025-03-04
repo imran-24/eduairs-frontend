@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from "react";
-import { getAllProducts } from "../../actions/get-all-products";
-import { Link } from "@inertiajs/react";
 import Spiner from "../components/spiner";
-import ProductList from "../components/products/product-list";
-import Header from "../components/header";
+;
+import { useAuth } from "../../hooks/use-auth";
+import Profile from "../components/profile";
+import { getAllProductsByUser } from "../../actions/get-all-products-by-user";
 
 const DashboardPage = () => {
+  const {user, role} = useAuth();
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  const fetchData = async (url = "/product") => {
+  const fetchData = async (url = "/products") => {
     setLoading(true);
     try {
-      const response = await getAllProducts(url);
-      setData(response.data.data); // Extract `data` array
+      const response = await getAllProductsByUser(url);
+      console.log(response);
+      setData(response); // Extract `data` array
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -29,28 +31,7 @@ const DashboardPage = () => {
 
   return (
     <div className='space-y-2'>
-      <Header title={"All Products"} />
-      <ProductList products={data} />
-      {/* Pagination */}
-      {/* {pagination?.links && (
-        <div className='flex space-x-2 mt-4'>
-          {pagination.links.map((link, index) => (
-            <Link
-              key={index}
-              preserveScroll
-              href={link.url || ""}
-              className={`px-3 py-2 text-sm rounded-lg text-gray-600 ${
-                link.active ? "bg-gray-200" : ""
-              } ${!link.url ? "!text-gray-300 cursor-not-allowed" : ""}`}
-              dangerouslySetInnerHTML={{ __html: link.label }}
-              onClick={(e) => {
-                if (!link.url) e.preventDefault();
-                else fetchData(link.url); // Fetch data for new page
-              }}
-            />
-          ))}
-        </div>
-      )} */}
+      <Profile user={user} role={role} products={data.data.data} />
     </div>
   );
 };

@@ -4,8 +4,7 @@ import { Link, useLocation } from "react-router-dom";
 import axios from "axios";
 import { apiUrl } from "../../utils";
 
-const Navbar = ({ user }) => {
-  console.log(user)
+const Navbar = ({ user, role }) => {
   const [show, setShow] = useState(false);
   const location = useLocation();
   const pathname = location.pathname.split("/")[1];
@@ -25,8 +24,8 @@ const Navbar = ({ user }) => {
       .then((response) => {
         console.log("success", response);
         localStorage.removeItem("token");
-        toggleMenu()
-        window.location.assign('/login');
+        toggleMenu();
+        window.location.assign("/login");
       })
       .catch((error) => {
         console.error("Something went wrong:", error);
@@ -64,6 +63,16 @@ const Navbar = ({ user }) => {
       <div>
         {user && (
           <div className='flex items-center gap-2'>
+            {role === "admin" && (
+              <Link
+                to={`/admin`}
+                className={`block   hover:text-black hover:bg-neutral-200 transition-all ease-in-out duration-200  p-1 rounded-lg ${
+                  pathname === "admin" ? "bg-neutral-200" : "bg-neutral-100"
+                }`}
+              >
+                Admin Panel
+              </Link>
+            )}
             <Link
               to={`/dashboard`}
               className={`block   hover:text-black hover:bg-neutral-200 transition-all ease-in-out duration-200  p-1 rounded-lg ${

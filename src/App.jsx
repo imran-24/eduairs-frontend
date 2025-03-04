@@ -17,16 +17,19 @@ import FavoritesPage from "./favorites/page";
 import CreateProductPage from "./products/create/page";
 import ProductDetailPage from "./products/product-details/page";
 import EditProductPage from "./products/edit/page";
+import AdminPanel from "./admin/page";
 
 function App() {
-  const { isAuthenticated, user, loading } = useAuth();
+  const { isAuthenticated, user, role, loading } = useAuth();
 
   if (loading) return <Spiner />; // Show a loading indicator while checking auth
+
+  console.log(role);
 
   return (
     <div className='h-screen'>
       <Router>
-        <Navbar user={user} />
+        <Navbar user={user} role={role} />
         <div className='px-4' style={{ height: "calc(100vh - 6rem)" }}>
           <Routes>
             {/* Redirect authenticated users to /dashboard */}
@@ -51,6 +54,9 @@ function App() {
                   path='/products/create'
                   element={<CreateProductPage />}
                 />
+
+                {role === "admin" && <Route path='/admin' element={<AdminPanel />} />}
+
                 <Route
                   path='/products/edit/:id'
                   element={<EditProductPage />}

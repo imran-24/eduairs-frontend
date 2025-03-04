@@ -18,6 +18,8 @@ const ProductDetailPage = () => {
     try {
       const response = await getProductById(id);
       setProduct(response.data);
+      console.log(response.data);
+      localStorage.setItem("lastSeen", JSON.stringify(response.data));
     } catch (error) {
       console.error("Error fetching data:", error);
     } finally {
@@ -29,6 +31,8 @@ const ProductDetailPage = () => {
     if (!id) return;
     fetchData(id);
   }, [id]);
+
+  // console.log(JSON.parse(localStorage.getItem("lastSeen")))
 
   if (loading) return <Spiner />;
 

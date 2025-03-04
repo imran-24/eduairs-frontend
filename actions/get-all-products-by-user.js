@@ -1,12 +1,12 @@
 import axios from "axios";
 import { apiUrl } from "../utils";
 
-export const getAllProducts = async (page) => {
+export const getAllProductsByUser = async (page) => {
   try {
     const token = localStorage.getItem("token");
     if (!token) throw new Error("No authentication token found");
 
-    const response = await axios.get(`${apiUrl}/admin/products?page=${page}`, {
+    const response = await axios.get(`${apiUrl}/products?page=${page}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -18,4 +18,3 @@ export const getAllProducts = async (page) => {
     return null; // Return null or handle error appropriately
   }
 };
-
